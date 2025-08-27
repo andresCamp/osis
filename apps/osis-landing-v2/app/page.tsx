@@ -1,22 +1,20 @@
-import Image, { StaticImageData } from "next/image";
 import img1 from "@/public/screens/MOAD.png"
 import img2 from "@/public/screens/JOBS.png"
 import img3 from "@/public/screens/ORCH.png"
 import img4 from "@/public/screens/WILD.png"
+import { StackedScreens } from "@/components/stacked-screens"
 
 export default function Home() {
+  const screens = [
+    { title: "Great products begin before \nthe first line of code is written.", image: img1 },
+    { title: "Behind every product people love \n is a process few have mastered.", image: img2 },
+    { title: "As we automate code generation, \nproduct direction becomes everything.", image: img3 },
+    { title: "Osis automates everything that happens \nbefore you open Cursor.", image: img4 }
+  ]
+
   return (
-    <div className="w-full bg-black min-h-screen">
-
-      <Section title="Great products begin before \nthe first line of code is written." image={img1} />
-
-      <Section title="Behind every product people love \n is a process few have mastered." image={img2} />
-
-      <Section title="As we automate code generation, \nproduct direction becomes everything." image={img3} />
-
-      <Section title="Osis automates everything that happens \nbefore you open Cursor." image={img4} />
-
-
+    <div className="w-full bg-black">
+      <StackedScreens screens={screens} />
     </div>
     // <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
     //   <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -118,17 +116,3 @@ export default function Home() {
   );
 }
 
-const Section = ({title, image}: {title: string, image: StaticImageData}) => {
-  const processedText = title.replace(/\\n/g, '\n');
-  return (
-    <section className="relative w-full h-dvh overflow-hidden">
-      {/* image */}
-      <Image src={image} alt={title} fill sizes="100vw" className="object-cover" />
-      
-      {/* text */}
-      <div className="absolute inset-0 p-9 flex items-center justify-center z-10">
-        <p className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line ">{processedText}</p>
-      </div>
-    </section>
-  )
-}

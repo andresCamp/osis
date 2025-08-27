@@ -7,7 +7,6 @@ import { cx } from 'class-variance-authority'
 const NavBar = () => {
   return (
     <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
-
         <NavBarHeader />
         <EarlyAccessButton />
     </div>
@@ -21,7 +20,7 @@ const NavBarHeader = () => {
     const linkClass = "text-2xl opacity-90 hover:opacity-100 duration-300 transition-all "
 
     return (
-        <nav className="w-full  grid grid-cols-3 items-center text-white">
+        <nav className="w-full px-8  grid grid-cols-3 items-center text-white">
         <div className="justify-self-start">
             <Link href="/" className={cx(linkClass, `${dmMono.className}`)}>
             osis
@@ -46,7 +45,7 @@ const NavBarHeader = () => {
 
 const EarlyAccessButton = () => {
     return (
-     <div className='text-white text-2xl hover:underline cursor-pointer  duration-300 transition-all w-fit'>
+     <div className='text-white text-2xl py-6 hover:underline cursor-pointer  duration-300 transition-all w-fit'>
       Sign Up for Early Access →
      </div>
     )

@@ -122,9 +122,12 @@ const Section = ({title, image}: {title: string, image: StaticImageData}) => {
   const processedText = title.replace(/\\n/g, '\n');
   return (
     <section className="relative w-full h-dvh overflow-hidden">
+      {/* image */}
       <Image src={image} alt={title} fill sizes="100vw" className="object-cover" />
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <p className="text-white text-center text-5xl leading-14 md:whitespace-pre-line ">{processedText}</p>
+      
+      {/* text */}
+      <div className="absolute inset-0 p-9 flex items-center justify-center z-10">
+        <p className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line ">{processedText}</p>
       </div>
     </section>
   )

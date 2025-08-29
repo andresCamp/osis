@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ status: "ok" })
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: "Invalid form data", details: err.errors }, { status: 400 })
+      return NextResponse.json({ error: "Invalid form data", details: err.issues }, { status: 400 })
     }
     console.error("/api/waitlist error:", err)
     return NextResponse.json({ error: "Internal error" }, { status: 500 })

@@ -69,9 +69,9 @@ export const EarlyAccessButton = () => {
             {trigger}
           </DialogTrigger>
           {/* 50/50 split */}
-          <DialogContent className="sm:max-w-6xl p-8 flex flex-col items-center bg-black text-white border-white/10">
+          <DialogContent className="sm:max-w-6xl p-8 flex flex-col items-center justify-start bg-black text-white border-white/10">
             <Image src={logo} alt="Osis" width={25} height={25} />
-            <div className="flex flex-row justify-center items-center gap-8 p-6">
+            <div className="flex flex-row justify-start items-start gap-8 p-6">
               {/* product pitch */}
               <div className="text-left flex-1">
                 <ProductPitch />
@@ -123,7 +123,7 @@ export const EarlyAccessButton = () => {
           onOpenChange={(v) => { setOpen(v); if (!v) setSubmitted(false) }}
           title="Sign Up for Early Access"
           description="Join the waitlist. We'll reach out with next steps."
-          initialHeight="50vh"
+          initialHeight="75vh"
         >
           <div className="!text-2xl max-w-xl mx-auto">
             {submitted ? (
@@ -149,38 +149,40 @@ export const EarlyAccessButton = () => {
 
   const ProductPitch = () => {
     return (
-      <div className="space-y-4 text-xl text-white">
+      <div className="space-y-4 text-2xl p-2 text-white">
+        {/* <div className="relative w-full h-20 rounded-3xl overflow-hidden">
+          <Image src="/screens/WATER.png" alt="Water" fill className="object-cover"   />
+        </div> */}
+        <p>Build products people love faster with Osis.</p>
+
+        {/* <p> */}
+          {/* Osis is your product&apos;s living intelligence layer. */}
+        {/* </p> */}
+
         <p>
-          Osis is your product&apos;s living intelligence layer.
+          Our platform automates product documentation with frameworks from the world&apos;s best companies:
+          {/* Our platform maintains your product wiki, generates PRDs, and handles documentation overhead using product management frameworks from the world&apos;s best companies: */}
         </p>
-        <p>
-          Our platform maintains your product wiki, generates PRDs, and handles documentation overhead using world-class product management frameworks.
-        </p>
-        <div className="w-full grid grid-cols-5 items-center gap-0 opacity-100">
+        <div className="w-fit grid grid-cols-5 items-start gap-2 opacity-100">
           <LogoCell src="/logos/apple.svg" alt="Apple" />
           <LogoCell src="/logos/amazon.svg" alt="Amazon" />
           <LogoCell src="/logos/ycombinator.svg" alt="Y Combinator" />
           <LogoCell src="/logos/meta.svg" alt="Meta" />
           <LogoCell src="/logos/google.svg" alt="Google" />
         </div>
+        
         <p>
           Rich integrations augment your entire tool stack with deep, real-time product context.
         </p>
-        <div className="w-full grid grid-cols-5 items-center gap-0 opacity-100">
-          <LogoCell src="/logos/cursor.svg" alt="Cursor" />
-          <LogoCell src="/logos/linear.svg" alt="Linear" />
-          <LogoCell src="/logos/slack.svg" alt="Slack" />
-          <LogoCell src="/logos/claude.svg" alt="Claude" />
-          <LogoCell src="/logos/chatgpt.svg" alt="ChatGPT" />
-        </div>
-        <p>Build products people love faster with Osis.</p>
+       
+        {/* <p>Build products people love faster with Osis.</p> */}
       </div>
     )
   }
 
   const LogoCell = ({ src, alt }: { src: string; alt: string }) => (
-    <div className="flex justify-left">
-      <div className="relative h-12 w-28 md:h-10 md:w-32">
+    <div className="flex justify-center items-center bg-white/10 rounded-2xl size-14 p-3">
+      <div className="relative h-12 w-28 ">
         <Image src={src} alt={alt} fill className="object-contain" />
       </div>
     </div>

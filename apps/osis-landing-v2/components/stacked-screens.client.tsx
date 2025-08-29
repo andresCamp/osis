@@ -146,7 +146,7 @@ function ScrollIndicator({ totalScreens, scrollProgress, onDotClick }: ScrollInd
   const activeIndex = useTransform(scrollProgress, (v) => Math.min(v * totalScreens, totalScreens - 0.001))
   
   return (
-    <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4">
+    <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
       {Array.from({ length: totalScreens }).map((_, index) => (
         <ScrollDot
           key={index}

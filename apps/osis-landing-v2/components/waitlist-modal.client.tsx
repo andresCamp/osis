@@ -2,7 +2,6 @@
 
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,8 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 // Custom sheet replaces Drawer on mobile
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 import Image from "next/image"
 import { SheetModal } from "@/components/ui/sheet-modal"
 import logo from "@/public/logos/osis-logo.svg"
@@ -23,32 +21,32 @@ import logo from "@/public/logos/osis-logo.svg"
 // import { z } from "zod"
 import { WaitlistForm } from "./waitlist-form.client"
 import { CheckIcon } from "lucide-react"
+import { ReferralLink } from "./ReferralLink"
 
-export function DrawerDialogDemo() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+// Shared constants
+const MODAL_CONTENT = {
+  title: "Sign Up for Early Access",
+  description: "Join the waitlist. We'll reach out with next steps.",
+  successTitle: "You're on the list!",
+  successDescription: "Thanks for your interest. We'll reach out with next steps shortly.",
+} as const
 
-  if (isDesktop) {
-    return null
-  }
-  return null
-}
+// Shared success component
+const SuccessMessage = ({ variant = "default" }: { variant?: "default" | "dialog" }) => (
+  <div className=" space-y-3 my-6 xl:my-12  bg-green-500/10 border-2 border-green-500/20 rounded-lg p-4 text-center">
+    {variant === "dialog" && (
+      <DialogHeader className="sr-only">
+        <DialogTitle>Success</DialogTitle>
+      </DialogHeader>
+    )}
+    <CheckIcon className="w-10 h-10 mx-auto text-green-500" />
+    <h3 className="text-xl font-semibold">{MODAL_CONTENT.successTitle}</h3>
+    <p className="text-gray-300">{MODAL_CONTENT.successDescription}</p>
+  </div>
+)
 
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  return (
-    <form className={cn("grid items-start gap-6", className)}>
-      <div className="grid gap-3">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
-      </div>
-      <div className="grid gap-3">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@shadcn" />
-      </div>
-      <Button type="submit">Save changes</Button>
-    </form>
-  )
-}
+
+
 
 
 export const EarlyAccessButton = () => {
@@ -77,20 +75,12 @@ export const EarlyAccessButton = () => {
                 <ProductPitch />
               </div>
 
-                <div className="w-0.5 h-96 bg-white/20 mx-8" />
+              <div className="w-0.5 h-96 bg-white/20 mx-8" />
 
-                {/* <Separator orientation="vertical"/> */}
-              {/* sign up form or success */}
               <div className="flex-1">
                 {submitted ? (
                   <div className="space-y-3">
-                    <DialogHeader className="sr-only">
-                      <DialogTitle>Success</DialogTitle>
-                    </DialogHeader>
-                    {/* TODO: add a checkmark icon */}
-                    <CheckIcon className="w-10 h-10" />
-                    <h3 className="text-xl font-semibold">You’re on the list!</h3>
-                    <p className="text-gray-300">Thanks for your interest. We’ll reach out with next steps shortly.</p>
+                    <SuccessMessage variant="dialog" />
                     <div className="pt-2">
                       <Button variant="outline" className="cursor-pointer text-black" onClick={() => setOpen(false)}>Close</Button>
                     </div>
@@ -98,9 +88,9 @@ export const EarlyAccessButton = () => {
                 ) : (
                   <>
                     <DialogHeader>
-                      <DialogTitle className="!text-xl">Sign Up for Early Access</DialogTitle>
+                      <DialogTitle className="!text-xl">{MODAL_CONTENT.title}</DialogTitle>
                       <DialogDescription className="text-md text-gray-300">
-                        Get on the list and we&apos;ll reach out with next steps.
+                        {MODAL_CONTENT.description}
                       </DialogDescription>
                     </DialogHeader>
                     <WaitlistForm onSuccess={() => setSubmitted(true)} />
@@ -108,6 +98,7 @@ export const EarlyAccessButton = () => {
                 )}
               </div>
             </div>
+                <ReferralLink />
           </DialogContent>
         </Dialog>
       )
@@ -121,18 +112,22 @@ export const EarlyAccessButton = () => {
         <SheetModal
           open={open}
           onOpenChange={(v) => { setOpen(v); if (!v) setSubmitted(false) }}
-          title="Sign Up for Early Access"
-          description="Join the waitlist. We'll reach out with next steps."
           initialHeight="75vh"
         >
-          <div className="!text-2xl max-w-xl mx-auto">
+          <div className="px-4 text-center flex flex-col items-center justify-center">
+            <Image src={logo} alt="Osis" width={25} height={25} />
+            {!submitted && (
+              <>
+                <h2 className="text-3xl mt-4 font-semibold">{MODAL_CONTENT.title}</h2>
+                <p className="text-gray-300 text-lg mt-1">{MODAL_CONTENT.description}</p>
+              </>
+            )}
+          </div>
+          <div className="px-4 max-w-xl mx-auto">
             {submitted ? (
               <div className="space-y-6">
+                <SuccessMessage />
                 <ProductPitch />
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold">You&apos;re on the list!</h3>
-                  <p className="text-gray-300">Thanks for your interest. We&apos;ll reach out with next steps shortly.</p>
-                </div>
               </div>
             ) : (
               <div className="space-y-6">
@@ -140,6 +135,7 @@ export const EarlyAccessButton = () => {
                 <ProductPitch />
               </div>
             )}
+            <ReferralLink />
           </div>
         </SheetModal>
       </>
@@ -149,33 +145,25 @@ export const EarlyAccessButton = () => {
 
   const ProductPitch = () => {
     return (
-      <div className="space-y-4 text-2xl p-2 text-white">
-        {/* <div className="relative w-full h-20 rounded-3xl overflow-hidden">
-          <Image src="/screens/WATER.png" alt="Water" fill className="object-cover"   />
-        </div> */}
-        <p>Build products people love faster.</p>
-
-        {/* <p> */}
-          {/* Osis is your product&apos;s living intelligence layer. */}
-        {/* </p> */}
+      <div className="space-y-4 text-3xl xl:text-2xl p-2 text-white">
+        <p>Build products people love faster</p>
 
         <p>
-          Osis automates product documentation with frameworks from the world&apos;s best companies:
-          {/* Our platform maintains your product wiki, generates PRDs, and handles documentation overhead using product management frameworks from the world&apos;s best companies: */}
+          Osis automates product strategy and documentation using frameworks from the world&apos;s best companies
         </p>
-        <div className="w-fit grid grid-cols-5 items-start gap-2 opacity-100">
+        
+        <p>
+          Integrations transform your tool stack with product context that is never stale
+        </p>
+        <div className="w-fit grid grid-cols-7 items-start gap-2 my-8 opacity-100">
           <LogoCell src="/logos/apple.svg" alt="Apple" />
           <LogoCell src="/logos/amazon.svg" alt="Amazon" />
           <LogoCell src="/logos/ycombinator.svg" alt="Y Combinator" />
           <LogoCell src="/logos/meta.svg" alt="Meta" />
           <LogoCell src="/logos/google.svg" alt="Google" />
+          <LogoCell src="/logos/claude.svg" alt="Claude" />
+          <LogoCell src="/logos/chatgpt.svg" alt="ChatGPT" />
         </div>
-        
-        <p>
-          Deep integrations augment your tool stack with real-time product context.
-        </p>
-       
-        {/* <p>Build products people love faster with Osis.</p> */}
       </div>
     )
   }

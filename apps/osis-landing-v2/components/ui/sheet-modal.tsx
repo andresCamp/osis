@@ -2,19 +2,20 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import logo from "@/public/logos/osis-logo.svg"
-import Image from "next/image"
 
 type SheetModalProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  title: string
-  description?: string
   initialHeight?: string // e.g., "50vh"
   children: React.ReactNode
 }
 
-export function SheetModal({ open, onOpenChange, title, description, initialHeight = "50vh", children }: SheetModalProps) {
+export function SheetModal({ open, onOpenChange, initialHeight = "50vh", children }: SheetModalProps) {
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [dragStartY, setDragStartY] = React.useState(0)
+  const [dragCurrentY, setDragCurrentY] = React.useState(0)
+  const sheetRef = React.useRef<HTMLDivElement>(null)
+
   React.useEffect(() => {
     if (open) {
       const prev = document.body.style.overflow
@@ -24,6 +25,39 @@ export function SheetModal({ open, onOpenChange, title, description, initialHeig
       }
     }
   }, [open])
+
+  const handleDragStart = (clientY: number) => {
+    setIsDragging(true)
+    setDragStartY(clientY)
+    setDragCurrentY(clientY)
+  }
+
+  const handleDragMove = (clientY: number) => {
+    if (!isDragging) return
+    const deltaY = clientY - dragStartY
+    if (deltaY > 0) { // Only allow downward drag
+      setDragCurrentY(clientY)
+      if (sheetRef.current) {
+        sheetRef.current.style.transform = `translateY(${deltaY}px)`
+      }
+    }
+  }
+
+  const handleDragEnd = () => {
+    if (!isDragging) return
+    const deltaY = dragCurrentY - dragStartY
+    const threshold = 100 // Close if dragged down more than 100px
+    
+    if (deltaY > threshold) {
+      onOpenChange(false)
+    } else {
+      // Snap back
+      if (sheetRef.current) {
+        sheetRef.current.style.transform = 'translateY(0px)'
+      }
+    }
+    setIsDragging(false)
+  }
 
   if (!open) return null
 
@@ -44,20 +78,25 @@ export function SheetModal({ open, onOpenChange, title, description, initialHeig
         style={{ paddingTop: `calc(100vh - ${initialHeight})` }}
       >
         <div
+          ref={sheetRef}
           data-state="open"
           className={cn(
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom w-full max-w-xl rounded-t-4xl bg-black text-white border border-white/10",
-            "mx-auto flex flex-col min-h-full",
+            "mx-auto flex flex-col min-h-full transition-transform duration-200",
           )}
         >
-          <div className="px-4 pt-6 pb-2 text-center w-full flex flex-col flex-shrink-0 items-center justify-center">
-            <Image src={logo} alt="Osis" width={25} height={25} />
-            <h2 className="text-3xl mt-4 font-semibold">{title}</h2>
-            {description && (
-              <p className="text-gray-300 text-lg mt-1">{description}</p>
-            )}
+          <div 
+            className="px-4 pt-6 pb-2 w-full flex flex-col flex-shrink-0 items-center justify-center cursor-grab active:cursor-grabbing"
+            onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
+            onTouchMove={(e) => handleDragMove(e.touches[0].clientY)}
+            onTouchEnd={handleDragEnd}
+            onMouseDown={(e) => handleDragStart(e.clientY)}
+            onMouseMove={(e) => handleDragMove(e.clientY)}
+            onMouseUp={handleDragEnd}
+          >
+            <div className="w-12 h-1 bg-white/20 rounded-full mb-4" />
           </div>
-          <div className="px-4 flex-1">
+          <div className="flex-1">
             {children}
           </div>
           <div className="px-4 pb-4 pt-16 flex-shrink-0">

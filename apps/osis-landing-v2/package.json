@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "email-dev": "email dev --dir /app/emails"
+    "email-dev": "npx react-email dev --dir app/emails --port 4000"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

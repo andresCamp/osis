@@ -30,11 +30,9 @@ export async function POST(request: Request) {
     const json = await request.json()
     const { name, email, company } = bodySchema.parse(json)
 
-    const originHeader = request.headers.get("origin") || undefined
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || originHeader || new URL(request.url).origin
     const logoPathEnv = process.env.RESEND_LOGO_URL
-    const defaultLogoPath = "/logos/osis-logo.svg"
-    const logoUrl = logoPathEnv || `${baseUrl}${defaultLogoPath}`
+    const fallbackLogo = "https://www.osis.dev/logos/osis-logo.png"
+    const logoUrl = logoPathEnv || fallbackLogo
 
     if (audienceId) {
       resend.contacts

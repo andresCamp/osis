@@ -3,6 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { dmMono } from '@/app/fonts'
 import { cx } from 'class-variance-authority'
+// import { Button } from './ui/button'
+import { EarlyAccessButton } from './waitlist-modal.client'
 
 const NavBar = () => {
   return (
@@ -43,11 +45,12 @@ const NavBarHeader = () => {
 
 
 
-const EarlyAccessButton = () => {
-    return (
-     <div className='text-white text-2xl py-6 hover:underline cursor-pointer  duration-300 transition-all w-fit'>
-      Sign Up for Early Access →
-     </div>
-    )
-  }
+// const EarlyAccessButton = () => {
+//     return (
+//      <div className='text-white text-2xl py-6 hover:underline cursor-pointer  duration-300 transition-all w-fit'>
+//       Sign Up for Early Access →
+//      </div>
+//     )
+//   }
+
   

@@ -2,7 +2,7 @@ import img1 from "@/public/screens/MOAD.png"
 import img2 from "@/public/screens/JOBS.png"
 import img3 from "@/public/screens/ORCH.png"
 import img4 from "@/public/screens/WILD.png"
-import { StackedScreens } from "@/components/stacked-screens"
+import { StackedScreens } from "@/components/stacked-screens.client"
 
 export default function Home() {
   const screens = [

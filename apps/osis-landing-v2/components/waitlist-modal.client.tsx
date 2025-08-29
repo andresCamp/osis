@@ -153,14 +153,14 @@ export const EarlyAccessButton = () => {
         {/* <div className="relative w-full h-20 rounded-3xl overflow-hidden">
           <Image src="/screens/WATER.png" alt="Water" fill className="object-cover"   />
         </div> */}
-        <p>Build products people love faster with Osis.</p>
+        <p>Build products people love faster.</p>
 
         {/* <p> */}
           {/* Osis is your product&apos;s living intelligence layer. */}
         {/* </p> */}
 
         <p>
-          Our platform automates product documentation with frameworks from the world&apos;s best companies:
+          Osis automates product documentation with frameworks from the world&apos;s best companies:
           {/* Our platform maintains your product wiki, generates PRDs, and handles documentation overhead using product management frameworks from the world&apos;s best companies: */}
         </p>
         <div className="w-fit grid grid-cols-5 items-start gap-2 opacity-100">
@@ -172,7 +172,7 @@ export const EarlyAccessButton = () => {
         </div>
         
         <p>
-          Rich integrations augment your entire tool stack with deep, real-time product context.
+          Deep integrations augment your tool stack with real-time product context.
         </p>
        
         {/* <p>Build products people love faster with Osis.</p> */}

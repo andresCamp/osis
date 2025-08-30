@@ -3,10 +3,14 @@
 import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
 import { useRef } from 'react'
 import Image, { StaticImageData } from 'next/image'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface Screen {
   title: string
   image: StaticImageData
+  // Optional: control subject framing on mobile by shifting the X axis (0 = left, 50 = center, 100 = right)
+  
+  className?: string
 }
 
 interface StackedScreensProps {
@@ -15,6 +19,7 @@ interface StackedScreensProps {
 
 export function StackedScreens({ screens }: StackedScreensProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const isMobile = useMediaQuery('(max-width: 768px)')
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -36,7 +41,7 @@ export function StackedScreens({ screens }: StackedScreensProps) {
       <div style={{ height: `${screens.length * 100}vh` }} />
       
       {/* Fixed positioned screens */}
-      <div className="fixed inset-0">
+      <div className="fixed inset-0" style={{ height: isMobile ? '100dvh' : undefined }}>
         {screens.map((screen, index) => (
           <AnimatedScreen
             key={index}
@@ -67,6 +72,7 @@ interface AnimatedScreenProps {
 
 function AnimatedScreen({ screen, index, totalScreens, scrollProgress }: AnimatedScreenProps) {
   const isLastScreen = index === totalScreens - 1
+  const isMobile = useMediaQuery('(max-width: 768px)')
   
   // Each screen gets exactly 1/totalScreens of the scroll range
   const segmentSize = 1 / totalScreens
@@ -101,26 +107,25 @@ function AnimatedScreen({ screen, index, totalScreens, scrollProgress }: Animate
 
   return (
     <motion.div
-      className="absolute inset-0 w-full h-full bg-black"
+      className="absolute inset-0 w-full h-full overflow-visible bg-black"
       style={{
         filter: blur,
         opacity: opacity,
         zIndex: totalScreens - index,
+        // Use dynamic viewport height on mobile to avoid browser chrome issues
+        height: isMobile ? '100dvh' : undefined,
+        overflow: isMobile ? 'visible' : undefined,
       }}
     >
-      <div className="absolute inset-0 w-full h-full">
+  
         <Image 
           src={screen.image} 
           alt={screen.title} 
           fill 
           sizes="100vw" 
-          style={{
-            objectFit: 'cover',
-          }}
-          quality={100}
           priority={index === 0}
+          className={screen.className}
         />
-      </div>
       
       <div className="absolute inset-0 p-10 flex items-center justify-center z-10">
         <motion.p 

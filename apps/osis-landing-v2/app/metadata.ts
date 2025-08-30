@@ -4,9 +4,7 @@ export const metadata: Metadata = {
   title: "Osis - Build Products People Love Faster",
   description:
     "Automate product strategy and documentation using frameworks from the world's best companies. Osis maintains your living product wiki and provides rich integrations that transform your tool stack with always-current context. Get early access.",
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-    : undefined,
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   applicationName: "Osis",
   keywords: [
     "Osis",

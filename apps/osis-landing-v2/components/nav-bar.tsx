@@ -34,7 +34,7 @@ const NavBarHeader = () => {
             </Link>
         </div>
         <div className="justify-self-end">
-            <Link href="/about" className={linkClass}>
+            <Link href="/" className={linkClass}>
             about
             </Link>
         </div>

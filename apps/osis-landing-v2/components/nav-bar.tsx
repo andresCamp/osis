@@ -4,13 +4,15 @@ import Image from 'next/image'
 import { dmMono } from '@/app/fonts'
 import { cx } from 'class-variance-authority'
 // import { Button } from './ui/button'
-import { EarlyAccessButton } from './waitlist-modal.client'
+
 
 const NavBar = () => {
   return (
     <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
         <NavBarHeader />
-        <EarlyAccessButton />
+        <Link href="/join" className='text-white text-2xl my-6 duration-500 cursor-pointer transition-all w-fit'>
+          Sign Up for Early Access →
+        </Link>
     </div>
   )
 }
@@ -34,7 +36,7 @@ const NavBarHeader = () => {
             </Link>
         </div>
         <div className="justify-self-end">
-            <Link href="/" className={linkClass}>
+            <Link href="/join" className={linkClass}>
             about
             </Link>
         </div>

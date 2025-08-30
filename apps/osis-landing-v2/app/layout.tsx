@@ -10,8 +10,10 @@ export const viewport: Viewport = exportedViewport;
 
 export default function RootLayout({
   children,
+  waitlist,
 }: Readonly<{
   children: React.ReactNode;
+  waitlist: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -20,6 +22,7 @@ export default function RootLayout({
       >
         <NavBar />
         {children}
+        {waitlist}
       </body>
     </html>
   );

@@ -4,8 +4,8 @@ import orchImg from "@/public/screens/ORCH.webp"
 import wildImg from "@/public/screens/WILD.webp"
 import { StackedScreens } from "@/components/stacked-screens.client"
 
-export default function Home() {
 
+export default function Home() {
 
     const jobs = "object-contain scale-200 -translate-x-10 origin-left translate-y-35 md:scale-100 md:translate-x-0 md:translate-y-0 md:object-cover md:object-left"
     const orch = "object-contain scale-[2.9] origin-right translate-y-30 md:scale-100 md:translate-y-0 md:object-cover md:object-right"

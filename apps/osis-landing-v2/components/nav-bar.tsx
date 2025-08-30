@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { dmMono } from '@/app/fonts'
 import { cx } from 'class-variance-authority'
+import { JoinButton } from './join-button.client'
 // import { Button } from './ui/button'
 
 
@@ -10,9 +11,7 @@ const NavBar = () => {
   return (
     <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
         <NavBarHeader />
-        <Link href="/join" className='text-white text-2xl my-6 duration-500 cursor-pointer transition-all w-fit'>
-          Sign Up for Early Access →
-        </Link>
+        <JoinButton />
     </div>
   )
 }

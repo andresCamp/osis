@@ -143,7 +143,7 @@ export const EarlyAccessButton = () => {
   }
 
 
-  const ProductPitch = () => {
+ export const ProductPitch = () => {
     return (
       <div className="space-y-4 text-3xl xl:text-2xl p-2 text-white">
         <p>Build products people love faster</p>
@@ -155,7 +155,7 @@ export const EarlyAccessButton = () => {
         <p>
           Integrations transform your tool stack with product context that is never stale
         </p>
-        <div className="w-fit grid grid-cols-7 items-start gap-2 my-8 opacity-100">
+        {/* <div className="w-fit grid grid-cols-7 items-start gap-2 my-8 opacity-100">
           <LogoCell src="/logos/apple.svg" alt="Apple" />
           <LogoCell src="/logos/amazon.svg" alt="Amazon" />
           <LogoCell src="/logos/ycombinator.svg" alt="Y Combinator" />
@@ -163,15 +163,15 @@ export const EarlyAccessButton = () => {
           <LogoCell src="/logos/google.svg" alt="Google" />
           <LogoCell src="/logos/claude.svg" alt="Claude" />
           <LogoCell src="/logos/chatgpt.svg" alt="ChatGPT" />
-        </div>
+        </div> */}
       </div>
     )
   }
 
-  const LogoCell = ({ src, alt }: { src: string; alt: string }) => (
-    <div className="flex justify-center items-center bg-white/10 rounded-2xl size-14 p-3">
-      <div className="relative h-12 w-28 ">
-        <Image src={src} alt={alt} fill className="object-contain" />
-      </div>
-    </div>
-  )
+  // const LogoCell = ({ src, alt }: { src: string; alt: string }) => (
+  //   <div className="flex justify-center items-center bg-white/10 rounded-2xl size-14 p-3">
+  //     <div className="relative h-12 w-28 ">
+  //       <Image src={src} alt={alt} fill className="object-contain" />
+  //     </div>
+  //   </div>
+  // )

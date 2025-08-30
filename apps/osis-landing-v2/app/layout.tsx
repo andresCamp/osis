@@ -4,6 +4,7 @@ import "./globals.css";
 import { geistSans, geistMono, dmMono } from "./fonts";
 import NavBar from "@/components/nav-bar";
 import { metadata as exportedMetadata, viewport as exportedViewport } from "./metadata";
+import { PostHogProvider } from "./providers";
 
 export const metadata: Metadata = exportedMetadata;
 export const viewport: Viewport = exportedViewport;
@@ -20,9 +21,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dmMono.variable} antialiased`}
       >
-        <NavBar />
-        {children}
-        {waitlist}
+        <PostHogProvider>
+          <NavBar />
+          {children}
+          {waitlist}
+        </PostHogProvider>
       </body>
     </html>
   );

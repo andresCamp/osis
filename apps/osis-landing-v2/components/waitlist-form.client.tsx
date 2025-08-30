@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import CustomInput from "@/components/ui/custom-input"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import posthog from "posthog-js"
 
 type EarlyAccessFormProps = {
   className?: string
@@ -42,6 +43,11 @@ export function WaitlistForm({ className, onSuccess }: EarlyAccessFormProps) {
       }
       onSuccess?.()
     } finally {
+      posthog.capture('waitlist_signup', {
+        email: values.email, // include any relevant properties
+        name: values.name,
+        company: values.company,
+      });
       // no-op
     }
   }

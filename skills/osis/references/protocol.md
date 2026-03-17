@@ -137,7 +137,7 @@ osis/
   osis.json                                      ← machine state + config
   README.md                                      ← static, explains osis protocol
   twin.md                                        ← what the product IS (code compression)
-  {version}/
+  {product}-v{n}/
     vision.md                                    ← canon
     product-spec.md                              ← canon
     changelog.md                                 ← drift log

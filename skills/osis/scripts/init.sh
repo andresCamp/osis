@@ -1,11 +1,11 @@
 #!/bin/bash
 # Initialize osis doc structure for a project
-# Usage: bash init.sh [version]
-# Example: bash init.sh v1
+# Usage: bash init.sh [product-version]
+# Example: bash init.sh mystory-v3
 
 set -e
 
-VERSION="${1:-v1}"
+VERSION="${1:-product-v1}"
 BASE="osis/${VERSION}"
 
 if [ -d "osis" ] && [ -d "$BASE" ]; then

@@ -29,7 +29,7 @@ Osis maintains two things:
 ```
 osis/
   twin.md      ← what the product IS (code → natural language)
-  {version}/   ← what the product is BECOMING (natural language → code)
+  {product}-v{n}/   ← what the product is BECOMING (natural language → code)
 ```
 
 The **twin** compresses the codebase into product-level understanding — systems, capabilities, features, architecture, state. Agents and humans read it to understand the present faster than reading code.
@@ -208,7 +208,7 @@ The complete osis system in one visual.
   osis/
     osis.json      ← config + state (read first, always)
     twin.md        ← what IS    (code → natural language)
-    {version}/     ← what's BECOMING (natural language → code)
+    {product}-v{n}/     ← what's BECOMING (natural language → code)
       phase-N/
         signals/   ← raw inputs that informed decisions
 
@@ -330,7 +330,7 @@ osis/
   osis.json                                ← machine state + config (read first)
   README.md                                ← static, explains osis protocol
   twin.md                                  ← what the product IS (code compression)
-  {version}/                               ← what the product is BECOMING
+  {product}-v{n}/                               ← what the product is BECOMING
     vision.md                              ← canon
     product-spec.md                        ← canon
     changelog.md                           ← drift log

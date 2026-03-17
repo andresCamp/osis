@@ -9,7 +9,7 @@ Copy the prompt below and configure it as a recurring task. Run frequency depend
 ## The Prompt
 
 ```
-Read all active specs in osis/{version}/phase-{N}-{slug}/.
+Read all active specs in osis/{product}-v{n}/phase-{N}-{slug}/.
 
 For each implementation spec, compare:
   - Data model claims against schema files
@@ -29,10 +29,10 @@ For the phase game plan, check:
   - Systems listed have corresponding spec files
   - Deferred items haven't leaked into the codebase
 
-Do NOT scan osis/{version}/vision.md or product-spec.md — these are human-owned
+Do NOT scan osis/{product}-v{n}/vision.md or product-spec.md — these are human-owned
 documents of intent that can't be validated against code.
 
-Log all findings to osis/{version}/changelog.md with:
+Log all findings to osis/{product}-v{n}/changelog.md with:
   - Date
   - Spec file path
   - Finding type: [Drift] (spec says X, code does Y),

@@ -1,19 +1,20 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { dmMono } from '@/app/fonts'
 import { cx } from 'class-variance-authority'
 import { JoinButton } from './join-button.client'
-// import { Button } from './ui/button'
 
 
 const NavBar = () => {
-  return (
-    <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
-        <NavBarHeader />
-        <JoinButton />
-    </div>
-  )
+    return (
+        <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
+            <NavBarHeader />
+            <JoinButton />
+        </div>
+    )
 }
 
 export default NavBar
@@ -21,24 +22,25 @@ export default NavBar
 const NavBarHeader = () => {
 
     const linkClass = "text-2xl opacity-90 hover:opacity-100 duration-300 transition-all "
+    const linkClass2 = "text-xl opacity-90 hover:opacity-100 duration-300 transition-all "
 
     return (
         <nav className="w-full px-8  grid grid-cols-3 items-center text-white">
-        <div className="justify-self-start">
-            <Link href="/" className={cx(linkClass, `${dmMono.className}`)}>
-            osis
-            </Link>
-        </div>
-        <div className="justify-self-center">
-            <Link href="/" aria-label="Home">
-            <Image src="/logos/osis-logo.svg" alt="Osis logo" width={48} height={48} priority />
-            </Link>
-        </div>
-        <div className="justify-self-end">
-            <Link href="/join" className={linkClass}>
-            about
-            </Link>
-        </div>
+            <div className="justify-self-start">
+                <Link href="/" className={cx(linkClass, `${dmMono.className}`)}>
+                    osis
+                </Link>
+            </div>
+            <div className="justify-self-center">
+                <Link href="/" aria-label="Home">
+                    <Image src="/logos/osis-logo.svg" alt="Osis logo" width={48} height={48} priority />
+                </Link>
+            </div>
+            <div className="justify-self-end">
+                <button onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })} className={linkClass2}>
+                    manifesto
+                </button>
+            </div>
         </nav>
     )
 }
@@ -54,4 +56,4 @@ const NavBarHeader = () => {
 //     )
 //   }
 
-  
+

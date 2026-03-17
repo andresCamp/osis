@@ -1,33 +1,46 @@
 'use client'
 
 import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import Image, { StaticImageData } from 'next/image'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface Screen {
+  id: string
+  indicatorLabel: string
   title: string
-  image?: StaticImageData
+  image: StaticImageData
   className?: string
-  content?: React.ReactNode
 }
 
 interface StackedScreensProps {
   screens: Screen[]
 }
 
+const SCREEN_HOLD_VIEWPORTS = 1
+const SCREEN_TRANSITION_VIEWPORTS = 0.7
+const SCREEN_ENTRY_BLUR_AMOUNT = 14
+const SCREEN_EXIT_BLUR_AMOUNT = 12
+const DOT_IDLE_HEIGHT = 8
+const DOT_ACTIVE_HEIGHT = 32
+
 export function StackedScreens({ screens }: StackedScreensProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isMobile = useMediaQuery('(max-width: 768px)')
-  
+  const viewportUnit = isMobile ? '100dvh' : '100vh'
+  const totalScrollViewports = getTotalScrollViewports(screens.length)
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end start']
+    offset: ['start start', 'end end']
   })
+  const storyProgress = useTransform(scrollYProgress, (latest) => latest * totalScrollViewports)
 
   const scrollToScreen = (index: number) => {
-    // Each screen takes exactly 1 viewport height
-    const scrollPosition = window.innerHeight * index
+    if (!containerRef.current) return
+    const containerTop = containerRef.current.offsetTop
+    const viewportHeight = window.visualViewport?.height ?? window.innerHeight
+    const scrollPosition = containerTop + viewportHeight * getScreenStart(index)
     window.scrollTo({
       top: scrollPosition,
       behavior: 'smooth'
@@ -35,29 +48,34 @@ export function StackedScreens({ screens }: StackedScreensProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative">
-      {/* Create scroll space */}
-      <div style={{ height: `${screens.length * 100}vh` }} />
-      
-      {/* Fixed positioned screens */}
-      <div className="fixed inset-0" style={{ height: isMobile ? '100dvh' : undefined }}>
+    <div
+      ref={containerRef}
+      className="relative"
+      style={{
+        height: `calc(${totalScrollViewports + 1} * ${viewportUnit})`,
+      }}
+    >
+      <div
+        className="sticky top-0 overflow-hidden"
+        style={{
+          height: viewportUnit,
+        }}
+      >
         {screens.map((screen, index) => (
           <AnimatedScreen
-            key={index}
+            key={screen.id}
             screen={screen}
             index={index}
             totalScreens={screens.length}
-            scrollProgress={scrollYProgress}
+            storyProgress={storyProgress}
           />
         ))}
+        <ScrollIndicator
+          screens={screens}
+          storyProgress={storyProgress}
+          onDotClick={scrollToScreen}
+        />
       </div>
-      
-      {/* Scroll indicator */}
-      <ScrollIndicator 
-        totalScreens={screens.length} 
-        scrollProgress={scrollYProgress}
-        onDotClick={scrollToScreen}
-      />
     </div>
   )
 }
@@ -66,40 +84,16 @@ interface AnimatedScreenProps {
   screen: Screen
   index: number
   totalScreens: number
-  scrollProgress: MotionValue<number>
+  storyProgress: MotionValue<number>
 }
 
-function AnimatedScreen({ screen, index, totalScreens, scrollProgress }: AnimatedScreenProps) {
-  const isLastScreen = index === totalScreens - 1
+function AnimatedScreen({ screen, index, totalScreens, storyProgress }: AnimatedScreenProps) {
   const isMobile = useMediaQuery('(max-width: 768px)')
-  
-  // Each screen gets exactly 1/totalScreens of the scroll range
-  const segmentSize = 1 / totalScreens
-  
-  // Each screen starts animating at its index position
-  const startProgress = index * segmentSize
-  const endProgress = (index + 1) * segmentSize
-  const midPoint = (startProgress + endProgress) / 2
-  
-  // Create smooth transitions - hooks must be called unconditionally
-  const blur = useTransform(
-    scrollProgress,
-    isLastScreen 
-      ? [0, 1] // Last screen: no change across scroll
-      : [0, startProgress, midPoint, endProgress],
-    isLastScreen
-      ? ['blur(0px)', 'blur(0px)'] // Last screen never blurs
-      : ['blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(25px)']
+  const opacity = useTransform(storyProgress, (latest) =>
+    getScreenOpacity(latest, index, totalScreens)
   )
-  
-  const opacity = useTransform(
-    scrollProgress,
-    isLastScreen
-      ? [0, 1] // Last screen: no change across scroll
-      : [0, startProgress, midPoint, endProgress],
-    isLastScreen
-      ? [1, 1] // Last screen never fades
-      : [1, 1, 1, 0]
+  const imageBlur = useTransform(storyProgress, (latest) =>
+    `blur(${getScreenBlur(latest, index, totalScreens)}px)`
   )
 
   const processedText = screen.title.replace(/\\n/g, '\n')
@@ -108,62 +102,57 @@ function AnimatedScreen({ screen, index, totalScreens, scrollProgress }: Animate
     <motion.div
       className="absolute inset-0 w-full h-full overflow-visible bg-black"
       style={{
-        filter: blur,
-        opacity: opacity,
+        opacity,
         zIndex: totalScreens - index,
         // Use dynamic viewport height on mobile to avoid browser chrome issues
         height: isMobile ? '100dvh' : undefined,
         overflow: isMobile ? 'visible' : undefined,
       }}
     >
-      {screen.content ? (
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          {screen.content}
-        </div>
-      ) : (
-        <>
-          {screen.image && (
-            <Image
-              src={screen.image}
-              alt={screen.title}
-              fill
-              sizes="100vw"
-              priority={index === 0}
-              className={screen.className}
-            />
-          )}
-          <div className="absolute inset-0 p-10 flex items-center justify-center z-10">
-            <motion.p
-              className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line"
-              style={{ opacity }}
-            >
-              {processedText}
-            </motion.p>
-          </div>
-        </>
-      )}
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          filter: imageBlur,
+        }}
+      >
+        <Image
+          src={screen.image}
+          alt={screen.title}
+          fill
+          sizes="100vw"
+          priority={index === 0}
+          className={screen.className}
+        />
+      </motion.div>
+      <div className="absolute inset-0 p-10 flex items-center justify-center z-10">
+        <motion.p
+          className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line"
+        >
+          {processedText}
+        </motion.p>
+      </div>
     </motion.div>
   )
 }
 
 interface ScrollIndicatorProps {
-  totalScreens: number
-  scrollProgress: MotionValue<number>
+  screens: Screen[]
+  storyProgress: MotionValue<number>
   onDotClick: (index: number) => void
 }
 
-function ScrollIndicator({ totalScreens, scrollProgress, onDotClick }: ScrollIndicatorProps) {
-  // Peak each dot when a new 100vh screen hits the top of the viewport
-  // Map progress [0..1] -> [0..totalScreens], clamped just below the max to avoid overflow
-  const activeIndex = useTransform(scrollProgress, (v) => Math.min(v * totalScreens, totalScreens - 0.001))
-  
+function ScrollIndicator({ screens, storyProgress, onDotClick }: ScrollIndicatorProps) {
+  const totalScreens = screens.length
+
   return (
-    <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
-      {Array.from({ length: totalScreens }).map((_, index) => (
+    <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
+      {screens.map((screen, index) => (
         <ScrollDot
-          key={index}
+          key={screen.id}
           index={index}
-          activeIndex={activeIndex}
+          label={screen.indicatorLabel}
+          storyProgress={storyProgress}
+          totalScreens={totalScreens}
           onClick={() => onDotClick(index)}
         />
       ))}
@@ -173,34 +162,155 @@ function ScrollIndicator({ totalScreens, scrollProgress, onDotClick }: ScrollInd
 
 interface ScrollDotProps {
   index: number
-  activeIndex: MotionValue<number>
+  label: string
+  storyProgress: MotionValue<number>
+  totalScreens: number
   onClick: () => void
 }
 
-function ScrollDot({ index, activeIndex, onClick }: ScrollDotProps) {
-  // Transform height based on proximity to active index
-  const height = useTransform(
-    activeIndex,
-    [index - 0.5, index, index + 0.5],
-    ['8px', '32px', '8px']
+function ScrollDot({ index, label, storyProgress, totalScreens, onClick }: ScrollDotProps) {
+  const pillHeight = useTransform(storyProgress, (latest) =>
+    getIndicatorHeight(latest, index, totalScreens)
   )
-  
-  // Transform opacity based on proximity to active index
-  const opacity = useTransform(
-    activeIndex,
-    [index - 0.5, index, index + 0.5],
-    [0.3, 1, 0.3]
+  const opacity = useTransform(storyProgress, (latest) =>
+    getIndicatorOpacity(latest, index, totalScreens)
   )
-  
+
   return (
-    <motion.button
+    <button
       onClick={onClick}
-      className="w-2 rounded-full bg-white"
-      style={{
-        height,
-        opacity
-      }}
-      aria-label={`Go to screen ${index + 1}`}
-    />
+      className="flex w-2 items-center justify-center"
+      aria-label={`Go to ${label}`}
+    >
+      <motion.div
+        className="w-2 rounded-full bg-white"
+        style={{
+          height: pillHeight,
+          opacity,
+        }}
+      />
+    </button>
   )
+}
+
+function getScreenOpacity(progress: number, index: number, totalScreens: number) {
+  const holdStart = getScreenStart(index)
+  const entryStart = holdStart - SCREEN_TRANSITION_VIEWPORTS
+  const holdEnd = holdStart + SCREEN_HOLD_VIEWPORTS
+  const exitEnd = holdEnd + SCREEN_TRANSITION_VIEWPORTS
+  const isFirstScreen = index === 0
+  const isLastScreen = index === totalScreens - 1
+
+  if (isFirstScreen && progress <= holdEnd) return 1
+
+  if (progress < entryStart) return 0
+
+  if (!isFirstScreen && progress < holdStart) {
+    return easeInOutCubic(clamp((progress - entryStart) / SCREEN_TRANSITION_VIEWPORTS, 0, 1))
+  }
+
+  if (progress <= holdEnd) {
+    return 1
+  }
+
+  if (isLastScreen) return 1
+
+  if (progress >= exitEnd) return 0
+
+  return 1 - easeInOutCubic(clamp((progress - holdEnd) / SCREEN_TRANSITION_VIEWPORTS, 0, 1))
+}
+
+function getScreenBlur(progress: number, index: number, totalScreens: number) {
+  const holdStart = getScreenStart(index)
+  const entryStart = holdStart - SCREEN_TRANSITION_VIEWPORTS
+  const holdEnd = holdStart + SCREEN_HOLD_VIEWPORTS
+  const exitEnd = holdEnd + SCREEN_TRANSITION_VIEWPORTS
+  const isFirstScreen = index === 0
+  const isLastScreen = index === totalScreens - 1
+
+  if (isFirstScreen && progress <= holdEnd) return 0
+
+  if (progress < entryStart) return SCREEN_ENTRY_BLUR_AMOUNT
+
+  if (!isFirstScreen && progress < holdStart) {
+    return (1 - easeInOutCubic(clamp((progress - entryStart) / SCREEN_TRANSITION_VIEWPORTS, 0, 1))) * SCREEN_ENTRY_BLUR_AMOUNT
+  }
+
+  if (progress <= holdEnd) {
+    return 0
+  }
+
+  if (isLastScreen) return 0
+
+  if (progress >= exitEnd) return SCREEN_EXIT_BLUR_AMOUNT
+
+  return easeInOutCubic(clamp((progress - holdEnd) / SCREEN_TRANSITION_VIEWPORTS, 0, 1)) * SCREEN_EXIT_BLUR_AMOUNT
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function easeInOutCubic(value: number) {
+  if (value < 0.5) return 4 * value * value * value
+
+  return 1 - Math.pow(-2 * value + 2, 3) / 2
+}
+
+function easeOutCubic(value: number) {
+  return 1 - Math.pow(1 - value, 3)
+}
+
+function getIndicatorOpacity(progress: number, index: number, totalScreens: number) {
+  const amount = getIndicatorAmount(progress, index, totalScreens)
+  const nextScreenStart = getScreenStart(index + 1)
+
+  if (amount > 0) return 0.35 + amount * 0.65
+
+  if (progress >= nextScreenStart) return 0.55
+
+  return 0.35
+}
+
+function getIndicatorHeight(progress: number, index: number, totalScreens: number) {
+  const amount = getIndicatorAmount(progress, index, totalScreens)
+  return `${DOT_IDLE_HEIGHT + (DOT_ACTIVE_HEIGHT - DOT_IDLE_HEIGHT) * amount}px`
+}
+
+function getScreenStart(index: number) {
+  return index * (SCREEN_HOLD_VIEWPORTS + SCREEN_TRANSITION_VIEWPORTS)
+}
+
+function getTotalScrollViewports(screenCount: number) {
+  if (screenCount === 0) return 0
+
+  return screenCount * SCREEN_HOLD_VIEWPORTS + (screenCount - 1) * SCREEN_TRANSITION_VIEWPORTS
+}
+
+function getIndicatorAmount(progress: number, index: number, totalScreens: number) {
+  const holdStart = getScreenStart(index)
+  const holdEnd = holdStart + SCREEN_HOLD_VIEWPORTS
+  const previousTransitionStart = holdStart - SCREEN_TRANSITION_VIEWPORTS
+  const isFirstScreen = index === 0
+  const isLastScreen = index === totalScreens - 1
+
+  if (!isFirstScreen && progress < previousTransitionStart) return 0
+
+  if (!isFirstScreen && progress < holdStart) {
+    return clamp((progress - previousTransitionStart) / SCREEN_TRANSITION_VIEWPORTS, 0, 1)
+  }
+
+  if (progress <= holdEnd) {
+    return 1
+  }
+
+  if (isLastScreen) return 1
+
+  const nextScreenStart = getScreenStart(index + 1)
+
+  if (progress < nextScreenStart) {
+    return 1 - clamp((progress - holdEnd) / SCREEN_TRANSITION_VIEWPORTS, 0, 1)
+  }
+
+  return 0
 }

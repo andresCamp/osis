@@ -24,8 +24,8 @@ export async function POST(request: Request) {
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean)
-    const adminRecipient = "andrescampos220@gmail.com"
-    const notificationRecipients = Array.from(new Set([...teamRecipients, adminRecipient]))
+    const adminRecipient = process.env.ADMIN_EMAIL || ""
+    const notificationRecipients = Array.from(new Set([...teamRecipients, adminRecipient].filter(Boolean)))
 
     const json = await request.json()
     const { name, email, company } = bodySchema.parse(json)

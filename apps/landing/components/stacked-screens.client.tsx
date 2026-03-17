@@ -1,16 +1,15 @@
 'use client'
 
 import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import Image, { StaticImageData } from 'next/image'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 interface Screen {
   title: string
-  image: StaticImageData
-  // Optional: control subject framing on mobile by shifting the X axis (0 = left, 50 = center, 100 = right)
-  
+  image?: StaticImageData
   className?: string
+  content?: React.ReactNode
 }
 
 interface StackedScreensProps {
@@ -117,24 +116,32 @@ function AnimatedScreen({ screen, index, totalScreens, scrollProgress }: Animate
         overflow: isMobile ? 'visible' : undefined,
       }}
     >
-  
-        <Image 
-          src={screen.image} 
-          alt={screen.title} 
-          fill 
-          sizes="100vw" 
-          priority={index === 0}
-          className={screen.className}
-        />
-      
-      <div className="absolute inset-0 p-10 flex items-center justify-center z-10">
-        <motion.p 
-          className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line"
-          style={{ opacity }}
-        >
-          {processedText}
-        </motion.p>
-      </div>
+      {screen.content ? (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          {screen.content}
+        </div>
+      ) : (
+        <>
+          {screen.image && (
+            <Image
+              src={screen.image}
+              alt={screen.title}
+              fill
+              sizes="100vw"
+              priority={index === 0}
+              className={screen.className}
+            />
+          )}
+          <div className="absolute inset-0 p-10 flex items-center justify-center z-10">
+            <motion.p
+              className="text-white text-center text-4xl md:text-5xl leading-12 md:leading-14 md:whitespace-pre-line"
+              style={{ opacity }}
+            >
+              {processedText}
+            </motion.p>
+          </div>
+        </>
+      )}
     </motion.div>
   )
 }

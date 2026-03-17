@@ -1,135 +1,59 @@
-# Turborepo starter
+# Osis
 
-This Turborepo starter is maintained by the Turborepo core team.
+Build products people love, faster with product management that lives in your codebase.
 
-## Using this example
+Osis is an open protocol and AI skill that brings structured product thinking to any project. Install it, talk to it, get specs that tell you exactly what to build next.
 
-Run the following command:
+## Install
 
-```sh
-npx create-turbo@latest
+```bash
+npx skills add andresCamp/osis
 ```
 
-## What's inside?
+Then say "osis" in any Claude Code conversation.
 
-This Turborepo includes the following packages/apps:
+## What You Get
 
-### Apps and Packages
+**Digital Twin** — A living, product-level description of your entire codebase. What systems exist, what they do, how they connect. The first thing any agent reads before touching your code.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+**Structured Specs** — Vision, product spec, phases, system specs. A layered hierarchy where each level constrains the one below it. Discoveries flow back up.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+**Conversational Interface** — You don't fill out templates. You have conversations. The agent asks questions, challenges assumptions, and writes specs when you're aligned.
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## How It Works
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+Install → Talk → Specs → Build → Maintain
+                   ↑                  |
+                   +-- discoveries ---+
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+1. **Install** — `npx skills add andresCamp/osis`. No config, no accounts.
+2. **Bootstrap** — The agent scans your codebase and produces a digital twin and assessment.
+3. **Conversation** — Bring signals (ideas, feedback, discoveries). The agent drives toward first principles.
+4. **Specs** — When aligned, the agent writes structured specs. One doc at a time.
+5. **Build** — Build against specs. The delta between twin and protocol is the work.
+6. **Maintain** — Twin updates to reflect what's built. Drift scans keep specs honest.
+
+## Repo Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+apps/
+  landing/             Landing page (Next.js, deployed on Vercel)
+osis/                  Product documentation (protocol + twin)
+skills/
+  osis/                The Osis skill
+packages/              Shared configs and UI
 ```
 
-### Develop
+## Development
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+pnpm install
+pnpm dev
+pnpm build
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## License
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+[MIT](LICENSE)

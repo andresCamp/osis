@@ -35,7 +35,7 @@ Ordered by dependency. Each phase is independently testable.
 **Validates:** Can a stranger install Osis with one command and have it work?
 
 **Current state:**
-- Skill lives in two places: `/Users/andrescampos/.claude/skills/osis/` (local) and `skill/osis/` (repo)
+- Skill lives in two places: `~/.claude/skills/osis/` (local) and `skills/osis/` (repo)
 - SKILL.md is complete — persona, modes, conversational patterns, behavioral rules, file structure
 - References exist: `protocol.md`, `templates.md`, `drift-scan.md`
 - Init script exists: `scripts/init.sh`
@@ -45,7 +45,7 @@ Ordered by dependency. Each phase is independently testable.
 
 1. **Research skills.sh publishing requirements.** What directory structure does skills.sh expect? What metadata? Is the current SKILL.md frontmatter sufficient? Does the references/ directory get bundled?
 
-2. **Reconcile the two skill copies.** The repo copy (`skill/osis/`) and the local copy (`.claude/skills/osis/`) should be the same. Decide which is the source of truth. The repo copy should be publishable; the local copy is for dogfooding.
+2. **Reconcile the two skill copies.** The repo copy (`skills/osis/`) and the local copy (`.claude/skills/osis/`) should be the same. Decide which is the source of truth. The repo copy should be publishable; the local copy is for dogfooding.
 
 3. **Package the skill for publishing.** Adjust directory structure, metadata, or naming to meet skills.sh requirements. The skill should include:
    - `SKILL.md` — the full skill definition
@@ -119,7 +119,7 @@ Ordered by dependency. Each phase is independently testable.
 
 **Architecture — no changes needed:**
 ```
-apps/osis-landing-v2/
+apps/landing/
 ├── app/
 │   ├── page.tsx              ← Add new sections here (below StackedScreens)
 │   ├── layout.tsx            ← No changes
@@ -260,7 +260,7 @@ osis/
       implementation-spec.md         ← this document
       signals/                       ← raw inputs during Phase 1
 
-skill/osis/                          ← published to skills.sh
+skills/osis/                          ← published to skills.sh
   SKILL.md
   references/
     protocol.md
@@ -269,7 +269,7 @@ skill/osis/                          ← published to skills.sh
   scripts/
     init.sh
 
-apps/osis-landing-v2/
+apps/landing/
   components/
     hero-section.tsx                  ← NEW
     benefits-section.tsx              ← NEW

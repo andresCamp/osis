@@ -14,7 +14,7 @@ Last updated: 2026-03-16
      v
 +---------------------------+
 |     Landing Site          |
-|     (osis-landing-v2)     |
+|     (landing)     |
 |                           |
 |  Scroll-based hero        |
 |  4 stacked screens        |    +------------------+
@@ -49,7 +49,7 @@ Last updated: 2026-03-16
     product-spec.md <- canon (what + when)
     changelog.md
 
-  SKILL LAYER (skill/osis/)
+  SKILL LAYER (skills/osis/)
   ─────────────────────────
   SKILL.md       <- agent persona + modes
   references/    <- protocol, templates, drift-scan
@@ -119,7 +119,7 @@ User fills form → POST /api/waitlist
 ```
 Monorepo (pnpm + Turborepo)
 ├── apps/
-│   └── osis-landing-v2      (Next.js 15, App Router, Turbopack)
+│   └── landing      (Next.js 15, App Router, Turbopack)
 │       ├── Server Components (pages, layout, metadata)
 │       ├── Client Components (stacked-screens, waitlist-form, nav)
 │       ├── API Routes (waitlist)
@@ -132,7 +132,7 @@ Monorepo (pnpm + Turborepo)
 │   ├── osis.json
 │   ├── twin.md
 │   └── v1/ (vision, product-spec, changelog)
-└── skill/osis/               (agent skill definition)
+└── skills/osis/               (agent skill definition)
     ├── SKILL.md
     ├── references/
     └── scripts/

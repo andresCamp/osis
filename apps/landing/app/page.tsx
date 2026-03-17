@@ -4,6 +4,8 @@ import orchImg from "@/public/screens/ORCH.webp"
 import mountainImg from "@/public/screens/WILD.webp"
 import { StackedScreens } from "@/components/stacked-screens.client"
 import { HeroContent } from "@/components/hero.client"
+import { HowItWorks } from "@/components/how-it-works"
+import { CoreAbilities } from "@/components/core-abilities"
 
 
 export default function Home() {
@@ -37,11 +39,15 @@ export default function Home() {
   ]
 
   return (
-    <div className="w-full bg-black">
-      <div className="relative z-[60] h-dvh flex items-center justify-center">
+    <div className="w-full bg-black overflow-x-clip">
+      <div className="relative z-[60] flex justify-center pt-44 sm:pt-36 md:pt-44 pb-16 sm:pb-24">
         <HeroContent />
       </div>
-      <StackedScreens screens={screens} />
+      <HowItWorks />
+      <CoreAbilities />
+      <div id="manifesto">
+        <StackedScreens screens={screens} />
+      </div>
     </div>
   );
 }

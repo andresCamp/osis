@@ -10,7 +10,7 @@ import { JoinButton } from './join-button.client'
 
 const NavBar = () => {
     return (
-        <div className='w-full h-dvh flex flex-col fixed z-50 py-6 px-6   justify-between items-center'>
+        <div className='inset-x-0 h-dvh flex flex-col fixed z-[70] py-6 px-6 justify-between items-center pointer-events-none overflow-hidden'>
             <NavBarHeader />
             <JoinButton />
         </div>
@@ -25,7 +25,7 @@ const NavBarHeader = () => {
     const linkClass2 = "text-xl opacity-90 hover:opacity-100 duration-300 transition-all "
 
     return (
-        <nav className="w-full px-8  grid grid-cols-3 items-center text-white">
+        <nav className="w-full px-8 grid grid-cols-3 items-center text-white pointer-events-auto">
             <div className="justify-self-start">
                 <Link href="/" className={cx(linkClass, `${dmMono.className}`)}>
                     osis
@@ -37,9 +37,9 @@ const NavBarHeader = () => {
                 </Link>
             </div>
             <div className="justify-self-end">
-                <button onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })} className={linkClass2}>
+                <a href="#manifesto" className={linkClass2}>
                     manifesto
-                </button>
+                </a>
             </div>
         </nav>
     )

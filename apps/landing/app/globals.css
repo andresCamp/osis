@@ -123,7 +123,7 @@
     @apply border-border outline-ring/50;
   }
   html {
-    @apply bg-black;
+    @apply bg-black scroll-smooth;
   }
   body {
     @apply bg-background text-foreground;

@@ -35,7 +35,7 @@ export function HeroContent() {
         Build products people love, faster
       </h1>
       <p className="text-base sm:text-lg md:text-xl text-white/70 leading-relaxed">
-        Osis automates product strategy and documentation using frameworks from the world&apos;s best companies
+        We took the product management process behind the world&apos;s best companies and opensourced it as an agent skill.
       </p>
 
       <div

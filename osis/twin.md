@@ -49,11 +49,12 @@ Last updated: 2026-03-16
     product-spec.md <- canon (what + when)
     changelog.md
 
-  SKILL LAYER (skills/osis/)
-  ─────────────────────────
+  SKILL LAYER (skills/osis/ → symlinked to ~/.claude/skills/osis)
+  ──────────────────────────────────────────────────────────────
   SKILL.md       <- agent persona + modes
   references/    <- protocol, templates, drift-scan
   scripts/       <- init scaffolding
+  Source of truth is always skills/osis/ in this repo.
 
 ================================================================
 ```

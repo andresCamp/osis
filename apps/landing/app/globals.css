@@ -8,8 +8,20 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+@keyframes rainbow-spin {
+  0% { --rainbow-angle: 0deg; }
+  100% { --rainbow-angle: 360deg; }
+}
+
+@property --rainbow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 @theme inline {
   --animate-scroll: scroll 20s linear infinite;
+  --animate-rainbow-spin: rainbow-spin 3s linear infinite;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

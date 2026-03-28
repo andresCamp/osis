@@ -74,17 +74,19 @@ function InstallButton() {
 
 export function HeroContent() {
   return (
-    <div className="w-full max-w-4xl space-y-6 sm:space-y-8 text-left sm:text-center px-4 sm:px-6 overflow-hidden">
+    <div className="w-full max-w-4xl flex flex-col items-start sm:items-center text-left sm:text-center px-4 sm:px-6 overflow-hidden">
       <h1 className="text-4xl sm:text-5xl md:text-6xl text-white leading-tight">
         Build products people love, faster
       </h1>
-      <p className="text-base sm:text-lg md:text-xl text-white/70 leading-relaxed">
+      <p className="text-base sm:text-lg md:text-xl text-white/70 leading-relaxed mt-3 sm:mt-4">
         World-class product management, open sourced as a skill for your agent.
       </p>
 
-      <InstallButton />
+      <div className="mt-8 sm:mt-10">
+        <InstallButton />
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left mt-12 sm:mt-16 w-full">
         {benefits.map((benefit) => (
           <div key={benefit.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-4 sm:p-6 space-y-2 sm:space-y-3">
             <h3 className="text-base sm:text-lg text-white">{benefit.title}</h3>
@@ -93,11 +95,11 @@ export function HeroContent() {
         ))}
       </div>
 
-      <p className="text-xs sm:text-sm text-white/40 uppercase tracking-widest">
+      <p className="text-xs sm:text-sm text-white/40 uppercase tracking-widest mt-12 sm:mt-16">
         Build like the world&apos;s best companies
       </p>
       <div
-        className="relative overflow-hidden w-full !mt-3"
+        className="relative overflow-hidden w-full mt-3"
         style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
       >
         <div className="flex animate-scroll w-max will-change-transform">

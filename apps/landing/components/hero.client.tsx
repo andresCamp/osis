@@ -35,7 +35,7 @@ export function HeroContent() {
         Build products people love, faster
       </h1>
       <p className="text-base sm:text-lg md:text-xl text-white/70 leading-relaxed">
-        We took the product management process behind the world&apos;s best companies and opensourced it as an agent skill.
+        World-class product management, open sourced as a skill for your agent.
       </p>
 
       <div

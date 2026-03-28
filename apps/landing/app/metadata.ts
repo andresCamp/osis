@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Osis - Build Products People Love Faster",
+  title: "Osis | Build Products People Love Faster",
   description:
     "Automate product strategy and documentation using frameworks from the world's best companies. Osis maintains your living product wiki and provides rich integrations that transform your tool stack with always-current context. Get early access.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Osis - Build Products People Love Faster",
+    title: "Osis | Build Products People Love Faster",
     description:
       "Automate product strategy and documentation using frameworks from the world's best companies. Osis maintains your living product wiki and provides rich integrations that transform your tool stack with always-current context. Get early access.",
     siteName: "Osis",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Osis - Build Products People Love Faster",
+    title: "Osis | Build Products People Love Faster",
     description:
       "Automate product strategy and documentation using frameworks from the world's best companies. Osis maintains your living product wiki and provides rich integrations that transform your tool stack with always-current context. Get early access.",
     site: "@AndresLCampos",
